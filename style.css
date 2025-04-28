@@ -2,9 +2,9 @@
 .main-header {
     background: #2c3e50; /* 深蓝灰色背景 */
     color: white;
-    padding: 20px 0;
+    padding: 15px 0;
     text-align: center;
-    font-size: 2.5em;
+    font-size: 2.3em;
     font-weight: bold;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     position: sticky;
