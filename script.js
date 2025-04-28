@@ -17,14 +17,13 @@ function calculateLiquidation() {
         otherAssets: parseFloat(document.getElementById('otherAssets').value) || 0,
     };
 
-    // 计算清偿率
+    // 计算清算后可分配资金
     const distributableFunds = 
         inputs.monetaryFunds + 
         inputs.externalInvestment + 
         inputs.receivables + 
         inputs.fixedAssets + 
         inputs.otherAssets;
-
 
     // 渲染结果
     const resultDiv = document.getElementById('liquidation-result');
@@ -41,7 +40,6 @@ function calculateLiquidation() {
     assessmentData.part1 = { 
         ...inputs, 
         distributableFunds,
-        repaymentRate 
     };
 }
 
@@ -55,7 +53,7 @@ function calculateRationality() {
         isShutdown: Math.min(parseFloat(document.getElementById('isShutdown').value) || 0, 5),
         salesOperation: Math.min(parseFloat(document.getElementById('salesOperation').value) || 0, 15),
         strategicInvestors: Math.min(parseFloat(document.getElementById('premiumpricing').value) || 0, 5),
-        stableCashFlow: Math.min(parseFloat(document.getElementById('stableCashFlow').value) || 0, 10),
+        stableCashFlow: Math.min(parseFloat(document.getElementById('stableCashFlow').value) || 0, 15),
         hasTangibleAssets: Math.min(parseFloat(document.getElementById('hasTangibleAssets').value) || 0, 5),
         managementInPosition: Math.min(parseFloat(document.getElementById('managementInPosition').value) || 0, 3),
         internalRelations: Math.min(parseFloat(document.getElementById('internalRelations').value) || 0, 2),
@@ -87,7 +85,7 @@ function calculateRationality() {
         inputs.hasTangibleAssets + 
         inputs.managementInPosition + 
         inputs.internalRelations
-    ) * 0.5;
+    ) ;
 
     const suppTotal = (
         inputs.customerRelations + 
@@ -99,14 +97,14 @@ function calculateRationality() {
         inputs.digitalTransformation + 
         inputs.industryStatus + 
         inputs.socialValue
-    ) * 0.3;
+    ) ;
 
     const feasibility = (
         inputs.govSupport + 
         inputs.investorInterest + 
         inputs.specialQualification + 
         inputs.managementStability
-    ) * 0.2;
+    ) ;
 
     const totalScore = coreTotal + suppTotal + feasibility;
 
@@ -114,9 +112,6 @@ function calculateRationality() {
     const liquidationFunds = assessmentData.part1.distributableFunds || 0;
     const reorganizationValue = liquidationFunds * (totalScore / 100) * inputs.conversionFactor;
 
-    // 合理性验证
-    const liquidationRate = assessmentData.part1.repaymentRate || 0;
-    const isRational = inputs.commitmentRate > liquidationRate;
 
     // 结果渲染
     document.getElementById('rationality-result').innerHTML = `
@@ -138,7 +133,6 @@ function calculateRationality() {
         feasibility,
         totalScore,
         reorganizationValue,
-        isRational
     };
 }
 
@@ -152,7 +146,6 @@ function calculateComprehensive() {
 
     // 核心计算参数
     const distributableFunds = liquidationData.distributableFunds || 0;
-    const totalDebt = liquidationData.totalDebt || 0;
     const totalScore = reorganizationData.totalScore || 0;
     const conversionFactor = reorganizationData.conversionFactor || 1.5;
 
@@ -181,8 +174,6 @@ function calculateComprehensive() {
     // 数据持久化
     assessmentData.part3 = {
         estimatedValue,
-        liquidationRate,
-        reorganizationRate,
         conversionFactor,
         isValid
     };
