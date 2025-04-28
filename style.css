@@ -1,3 +1,23 @@
+/* 新增标题样式 */
+.main-header {
+    background: #2c3e50; /* 深蓝灰色背景 */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.main-header:hover {
+    background: #375572; /* 悬停时颜色加深 */
+    font-size: 2.6em;
+}
+
 body {
     font-family: '微软雅黑', sans-serif;
     line-height: 1.6;
