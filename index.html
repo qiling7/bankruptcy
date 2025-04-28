@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>中小企业重整价值评估系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>中小企业重整价值评估系统</h1>
+        <div class="explain">说明：
+            本工具为初筛参考，实际重整仍需专业机构评估。为了对您的重整价值进行评估，需要分别测算企业模拟清算清偿率、重整价值合理性以及重整可行性。</div>
+        <div class="hint">提示：<br>
+            ①在计算，破产重整价值模块，每一部分赋值权重均为可调整项，您可以根据实际情况进行权重调整。<br>
+            ②在计算资产价值时，可将市场上相同或类似的资产的快速交易价格作为基础评估价格。</div>
+        <div class="standard">本评估系统相关判断依据：
+            《全国法院破产审判工作会议纪要》（法〔2018〕53号）第14条（重整企业的识别审查）规定：“破产重整的对象应当是具有挽救价值和可能的困境企业；对于僵尸企业，应通过破产清算，果断实现市场出清。人民法院在审查重整申请时，根据债务人的资产状况、技术工艺、生产销售、行业前景等因素，能够认定债务人明显不具备重整价值以及拯救可能性的，应裁定不予受理。”</div>
+
+        <!-- Part1 模拟清算 -->
+        <section class="part">
+            <h2>Part1: 模拟清算清偿率</h2>
+            <div class="explain1">仅需您输入“普通无担保债权总额”及各项资产变现价值（货币资金、固定资产等），系统自动汇总清算后可分配资金并计算清偿率。</div>
+            
+            <div class="input-group">
+                <label>货币资金（万元）:</label>
+                <input type="number" id="monetaryFunds" step="0.01">
+            </div>
+            
+            <div class="input-group">
+                <label>对外投资（万元）:</label>
+                <input type="number" id="externalInvestment" step="0.01">
+            </div>
+            
+            <div class="input-group">
+                <label>应收账款（万元）:</label>
+                <input type="number" id="receivables" step="0.01">
+            </div>
+            
+            <div class="input-group">
+                <label>固定资产变现价值（万元）:</label>
+                <input type="number" id="fixedAssets" step="0.01">
+            </div>
+            
+            <div class="input-group">
+                <label>其他资产变现价值（万元）:</label>
+                <input type="number" id="otherAssets" step="0.01">
+            </div>
+            
+            <div class="input-group">
+                <label>普通无担保债权总额（万元）:</label>
+                <input type="number" id="totalDebt" step="0.01">
+            </div>
+            
+            <button onclick="calculateLiquidation()">开始计算</button>
+            <div id="liquidation-result"></div>
+        </section>
+        
+
+        <!-- Part2 重整价值合理性 -->
+        <section class="part">
+            <h2>Part2: 重整价值合理性</h2>
+            <div class="explain1">说明：我们已设定“重整价值”与“潜在估值”的转换系数，您可根据需要对此转换系数进行合理调整。<br>重整总分100分=潜在估值为清算价值的1.5倍（建议不同行业预设差异化的转换系数，例如科技行业1.8倍，制造业1.2倍），<br例如：若清算后可分配资金为100万元，重整总分80分，则重整可分配价值=100万×（80/100×1.5）=120万元。</div>
+            <div class="explain1">
+                ·重整计划中普通无担保债权人承诺清偿比例（%）  <br>
+                →[重整清偿率] = 承诺清偿比例  <br>
+                →[合理性验证]：若重整清偿率 > 模拟清算清偿率，则通过；否则不通过。</div>
+
+                <div class="input-group">
+                    <label>转换系数（默认1.5）:</label>
+                    <input type="number" id="conversionFactor" value="1.5" step="0.1">
+                </div>
+            
+                <!-- 核心合理性 -->
+                <fieldset>
+                    <legend>核心合理性（50%）</legend>
+                    
+                    <!-- 基础与未来运营 -->
+                    <div class="input-group">
+                        <label>是否处于停产状态（0-5分）:</label>
+                        <input type="number" id="isShutdown" min="0" max="5">
+                    </div>
+                    <div class="input-group">
+                        <label>销售渠道运作（0-15分）:</label>
+                        <input type="number" id="salesOperation" min="0" max="15">
+                    </div>
+                    <div class="input-group">
+                        <label>战略投资者意向（0-5分）:</label>
+                        <input type="number" id="strategicInvestors" min="0" max="5">
+                    </div>
+                    <div class="input-group">
+                        <label>现金流预测（0-10分）:</label>
+                        <input type="number" id="stableCashFlow" min="0" max="10">
+                    </div>
+            
+                    <!-- 有形资产 -->
+                    <div class="input-group">
+                        <label>有形资产价值（0-5分）:</label>
+                        <input type="number" id="hasTangibleAssets" min="0" max="5">
+                    </div>
+            
+                    <!-- 组织结构 -->
+                    <div class="input-group">
+                        <label>管理人员在职（0-3分）:</label>
+                        <input type="number" id="managementInPosition" min="0" max="3">
+                    </div>
+                    <div class="input-group">
+                        <label>内部关系融洽（0-2分）:</label>
+                        <input type="number" id="internalRelations" min="0" max="2">
+                    </div>
+                </fieldset>
+            
+                <!-- 补充合理性 -->
+                <fieldset>
+                    <legend>补充合理性（30%）</legend>
+                    
+                    <!-- 无形资产 -->
+                    <div class="input-group">
+                        <label>客户关系（0-2分）:</label>
+                        <input type="number" id="customerRelations" min="0" max="2">
+                    </div>
+                    <div class="input-group">
+                        <label>质量认证体系证书（0-5分）:</label>
+                        <input type="number" id="qualityCertification" min="0" max="5">
+                    </div>
+                    <div class="input-group">
+                        <label>国家相关行业许可证（0-5分）:</label>
+                        <input type="number" id="industryLicense" min="0" max="5">
+                    </div>
+                    <div class="input-group">
+                        <label>专利数量（0-5分）:</label>
+                        <input type="number" id="patents" min="0" max="5">
+                    </div>
+                    <div class="input-group">
+                        <label>软件著作权数量（0-5分）:</label>
+                        <input type="number" id="softwareCopyrights" min="0" max="5">
+                    </div>
+            
+                    <!-- 行业价值 -->
+                    <div class="input-group">
+                        <label>行业前景：是否符合国家产业政策调整方向（例如，是否属于新兴领域、数字赋能等高质量发展产业）（0-2分）:</label>
+                        <input type="number" id="industryProspects" min="0" max="2">
+                    </div>
+                    <div class="input-group">
+                        <label>数字化转型程度（是否应用物联网、AI技术）（0-1分）:</label>
+                        <input type="number" id="digitalTransformation" min="0" max="1">
+                    </div>
+                    <div class="input-group">
+                        <label>行业地位：与上下游主体之间是否仍保持着良好的供应、金融、投资或管理等信用（0-2分）:</label>
+                        <input type="number" id="industryStatus" min="0" max="2">
+                    </div>
+            
+                    <div class="explain1">社会价值 </dev>
+                    <div class="input-group">
+                        <label>为您的企业存续的社会价值打分（如员工稳定性，核心员工留存率等）（0-3分）:</label>
+                        <input type="number" id="socialValue" min="0" max="3">
+                    </div>
+                </fieldset>
+            
+                <!-- 重整可行性 -->
+                <fieldset>
+                    <legend>重整可行性（20%）</legend>
+                    <div class="input-group">
+                        <label>地方政府支持力度（是否有税收优惠、政策补贴）（0-5分）:</label>
+                        <input type="number" id="govSupport" min="0" max="5">
+                    </div>
+                    <div class="input-group">
+                        <label>潜在投资人意向（是否有投资意向书或协议）（0-5分）:</label>
+                        <input type="number" id="investorInterest" min="0" max="5">
+                    </div>
+                    <div class="input-group">
+                        <label>特殊资质（如上市公司壳资源、特许经营许可）（0-5分）:</label>
+                        <input type="number" id="specialQualification" min="0" max="5">
+                    </div>
+                    <div class="input-group">
+                        <label>管理层稳定性（核心团队是否留存）（0-5分）:</label>
+                        <input type="number" id="managementStability" min="0" max="5">
+                    </div>
+                </fieldset>
+            
+                <button onclick="calculateRationality()">评估合理性</button>
+                <div id="rationality-result"></div>
+            </section>
+            
+
+        <!-- Part3 综合评估 -->
+        <section class="part">
+            <h2>Part3: 综合评估重整合理性</h2>
+            <div class="explain1">基于前序计算结果验证重整清偿率是否优于清算，自动生成最终评估结论</div>
+        
+            <!-- 无需输入字段，直接展示综合计算结果 -->
+            <div class="input-group tip">
+                <p>💡 请先完成 Part1 和 Part2 计算</p>
+            </div>
+        
+            <button onclick="calculateComprehensive()">执行综合验证</button>
+            <div id="comprehensive-result"></div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+body {
+    font-family: '微软雅黑', sans-serif;
+    line-height: 1.6;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.container {
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.part {
+    margin: 30px 0;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+}
+
+.explain1 {
+    margin-bottom: 15px;
+}
+
+.input-group {
+    margin: 15px 0;
+}
+
+input[type="number"] {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+.explain {
+    color: #000000;
+    margin: 15px 0;
+    padding: 10px;
+    background: #d0ddff;
+    border-radius: 5px;
+}
+
+.hint {
+    color: #000000;
+    margin: 15px 0;
+    padding: 10px;
+    background: #d0ddff;
+    border-radius: 5px;
+}
+
+.standard {
+    color: #000000;
+    margin: 15px 0;
+    padding: 10px;
+    background: #d0ddff;
+    border-radius: 5px;
+}
+
+/* 评分项样式 */
+.scoring-group {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #eee;
+}
+
+.score-input {
+    width: 80px;
+    margin-left: 10px;
+}
+
+.score-hint {
+    color: #ff4757;
+    margin-left: 10px;
+    font-size: 0.9em;
+}
+
+/* 结果框样式 */
+.result-box {
+    padding: 15px;
+    background: #f8f9fa;
+    border-left: 4px solid #007bff;
+    margin-top: 15px;
+}
+
+.highlight {
+    color: #2ed573;
+    font-weight: bold;
+}
+
+.warning {
+    color: #ff6b81;
+    font-weight: bold;
+}
+
+.rating-A { color: #2ed573; }
+.rating-B { color: #e67e22; }
+.rating-C { color: #ff4757; }
+
+/* 评分结果样式 */
+.score-detail {
+    margin: 10px 0;
+    padding: 8px;
+    background: #f8f9fa;
+}
+
+.category-score {
+    color: #2d3436;
+    font-weight: bold;
+}
+
+.total-score {
+    font-size: 1.2em;
+    border-top: 2px solid #007bff;
+    padding-top: 10px;
+    margin-top: 15px;
+}
+
+/* 增强样式 */
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 15px 0;
+    padding: 15px;
+}
+
+legend {
+    color: #666;
+    padding: 0 10px;
+}
+
+.pass { color: #52c41a; }
+.fail { color: #ff4d4f; }
