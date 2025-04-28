@@ -15,7 +15,6 @@ function calculateLiquidation() {
         receivables: parseFloat(document.getElementById('receivables').value) || 0,
         fixedAssets: parseFloat(document.getElementById('fixedAssets').value) || 0,
         otherAssets: parseFloat(document.getElementById('otherAssets').value) || 0,
-        totalDebt: parseFloat(document.getElementById('totalDebt').value) || 0
     };
 
     // 计算清偿率
@@ -26,8 +25,6 @@ function calculateLiquidation() {
         inputs.fixedAssets + 
         inputs.otherAssets;
 
-    const repaymentRate = distributableFunds > 0 ? 
-        (distributableFunds / inputs.totalDebt * 100) : 0;
 
     // 渲染结果
     const resultDiv = document.getElementById('liquidation-result');
@@ -36,10 +33,7 @@ function calculateLiquidation() {
             <h3>模拟清算结果</h3>
             <p>清算后可分配资金：${distributableFunds.toFixed(2)}万元</p>
 
-            <p class="highlight">模拟清算清偿率：${repaymentRate.toFixed(2)}%</p>
-            ${repaymentRate < 20 ? 
-                '<p class="warning">⚠️ 清偿率低于20%，存在重整价值空间</p>' : 
-                ''}
+
         </div>
     `;
 
@@ -60,7 +54,7 @@ function calculateRationality() {
         // 核心合理性
         isShutdown: Math.min(parseFloat(document.getElementById('isShutdown').value) || 0, 5),
         salesOperation: Math.min(parseFloat(document.getElementById('salesOperation').value) || 0, 15),
-        strategicInvestors: Math.min(parseFloat(document.getElementById('strategicInvestors').value) || 0, 5),
+        strategicInvestors: Math.min(parseFloat(document.getElementById('premiumpricing').value) || 0, 5),
         stableCashFlow: Math.min(parseFloat(document.getElementById('stableCashFlow').value) || 0, 10),
         hasTangibleAssets: Math.min(parseFloat(document.getElementById('hasTangibleAssets').value) || 0, 5),
         managementInPosition: Math.min(parseFloat(document.getElementById('managementInPosition').value) || 0, 3),
@@ -165,13 +159,9 @@ function calculateComprehensive() {
     // 计算重整价值
     const estimatedValue = distributableFunds * (totalScore / 100) * conversionFactor;
     
-    // 计算清偿率对比
-    const liquidationRate = liquidationData.repaymentRate || 0;
-    const reorganizationRate = totalDebt > 0 ? 
-        (estimatedValue / totalDebt * 100) : 0;
 
     // 验证逻辑
-    const isValid = reorganizationRate > liquidationRate;
+    const isValid = estimatedValue > distributableFunds;
 
     // 渲染结果
     const resultDiv = document.getElementById('comprehensive-result');
@@ -179,8 +169,7 @@ function calculateComprehensive() {
         <div class="result-box">
             <h3>综合重整验证</h3>
             <p>预估重整可分配资金：<strong>${estimatedValue.toFixed(2)}</strong>万元</p>
-            <p>模拟清算清偿率：${liquidationRate.toFixed(2)}%</p>
-            <p>模拟重整清偿率：${reorganizationRate.toFixed(2)}%</p>
+            <p>清算后可分配资金：<strong>${distributableFunds.toFixed(2)}</strong>万元</p>
             <p class="${isValid ? 'pass' : 'fail'}">结论：
                 ${isValid ? 
                     '✅ 您的企业可能存在重整价值。' : 

@@ -18,8 +18,8 @@
 
         <!-- Part1 模拟清算 -->
         <section class="part">
-            <h2>Part1: 模拟清算清偿率</h2>
-            <div class="explain1">仅需您输入“普通无担保债权总额”及各项资产变现价值（货币资金、固定资产等），系统自动汇总清算后可分配资金并计算清偿率。</div>
+            <h2>Part1: 模拟清算后可分配资金</h2>
+            <div class="explain1">仅需您输入各项资产变现价值（货币资金、固定资产等），系统自动汇总清算后可分配资金。</div>
             
             <div class="input-group">
                 <label>货币资金（万元）:</label>
@@ -46,11 +46,6 @@
                 <input type="number" id="otherAssets" step="0.01">
             </div>
             
-            <div class="input-group">
-                <label>普通无担保债权总额（万元）:</label>
-                <input type="number" id="totalDebt" step="0.01">
-            </div>
-            
             <button onclick="calculateLiquidation()">开始计算</button>
             <div id="liquidation-result"></div>
         </section>
@@ -59,11 +54,9 @@
         <!-- Part2 重整价值合理性 -->
         <section class="part">
             <h2>Part2: 重整价值合理性</h2>
-            <div class="explain1">说明：我们已设定“重整价值”与“潜在估值”的转换系数，您可根据需要对此转换系数进行合理调整。<br>重整总分100分=潜在估值为清算价值的1.5倍（建议不同行业预设差异化的转换系数，例如科技行业1.8倍，制造业1.2倍），<br例如：若清算后可分配资金为100万元，重整总分80分，则重整可分配价值=100万×（80/100×1.5）=120万元。</div>
+            <div class="explain1">说明：我们已设定“重整价值”与“潜在估值”的转换系数，您可根据需要对此转换系数进行合理调整。<br>重整总分100分=潜在估值为清算价值的1.5倍（建议不同行业预设差异化的转换系数，例如科技行业1.8倍，制造业1.2倍），例如：若清算后可分配资金为100万元，重整总分80分，则重整可得价值=100万×（80/100×1.5）=120万元。</div>
             <div class="explain1">
-                ·重整计划中普通无担保债权人承诺清偿比例（%）  <br>
-                →[重整清偿率] = 承诺清偿比例  <br>
-                →[合理性验证]：若重整清偿率 > 模拟清算清偿率，则通过；否则不通过。</div>
+                →[合理性验证]： 若 预估重整可分配价值 > 清算后可分配资金，则通过合理性验证；否则不通过。</div>
 
                 <div class="input-group">
                     <label>转换系数（默认1.5）:</label>
@@ -76,35 +69,40 @@
                     
                     <!-- 基础与未来运营 -->
                     <div class="input-group">
-                        <label>是否处于停产状态（0-5分）:</label>
+                        <label>是否处于停产状态（0-5分）</label>
+                    <div class="explain1"> 0 分 = 完全停产超 6 个月；3 分 = 部分停产；5 分 = 正常生产。</div> 
                         <input type="number" id="isShutdown" min="0" max="5">
                     </div>
                     <div class="input-group">
-                        <label>销售渠道运作（0-15分）:</label>
-                        <input type="number" id="salesOperation" min="0" max="15">
+                        <label>销售模式和销售渠道是否仍然正常运作（0-10分）</label>
+                    <div class="explain1">根据销售渠道（如直营 / 分销 / 电商）的完整性、核心客户流失率及近 3 个月订单量稳定性评分，渠道未流失、订单无显著下降得高分，反之低分。</div>
+                        <input type="number" id="salesOperation" min="0" max="10">
                     </div>
                     <div class="input-group">
-                        <label>战略投资者意向（0-5分）:</label>
-                        <input type="number" id="strategicInvestors" min="0" max="5">
+                        <label>产品 / 服务溢价能力（0-5分）</label>
+                    <div class="explain1">售价高于同行平均 10% 以上，5 分；无溢价，0 分。</div>
+                        <input type="number" id="premiumpricing" min="0" max="5">
                     </div>
                     <div class="input-group">
-                        <label>现金流预测（0-10分）:</label>
-                        <input type="number" id="stableCashFlow" min="0" max="10">
+                        <label>如继续营运，预测是否仍有稳定现金流、收入来源（0-15分）</label>
+                    <div class="explain1">依据未来 12 个月经营性现金流预测（正流入且金额越高得分越高）及收入来源的多样性（如长期合同、稳定渠道）评分，现金流稳定且收入来源多元得高分，持续亏损或来源单一低分。</div>
+                        <input type="number" id="stableCashFlow" min="0" max="15">
                     </div>
             
                     <!-- 有形资产 -->
                     <div class="input-group">
-                        <label>有形资产价值（0-5分）:</label>
+                        <label>有形资产价值评分（土地、房屋、机械设备）（0-5分）</label>
+                    <div class="explain1">若您的企业有一套位于郊区的厂房，市场急售价 200 万，但正常出租年租金 50 万（租期 10 年），则持续使用价值≈500 万，对应 3 分。0分为无资产，计算将跳过此步。</div>
                         <input type="number" id="hasTangibleAssets" min="0" max="5">
                     </div>
             
                     <!-- 组织结构 -->
                     <div class="input-group">
-                        <label>管理人员在职（0-3分）:</label>
+                        <label>企业董事、高级管理人员等负责企业日常经营管理的人员是否仍在从事相关职务（0-3分）:</label>
                         <input type="number" id="managementInPosition" min="0" max="3">
                     </div>
                     <div class="input-group">
-                        <label>内部关系融洽（0-2分）:</label>
+                        <label>内企业内部人员之间关系是否融洽（0-2分）:</label>
                         <input type="number" id="internalRelations" min="0" max="2">
                     </div>
                 </fieldset>
@@ -115,33 +113,40 @@
                     
                     <!-- 无形资产 -->
                     <div class="input-group">
-                        <label>客户关系（0-2分）:</label>
+                        <label>客户关系（0-2分）</label>
+                    <div class="explain1">根据核心客户合作年限及稳定性评分，长期合作客户占比高、流失率低得分高，反之低分。</div>
                         <input type="number" id="customerRelations" min="0" max="2">
                     </div>
                     <div class="input-group">
                         <label>质量认证体系证书（0-5分）:</label>
+                    <div class="explain1">按拥有行业认可的质量认证（如 ISO 9001、IATF 16949 等）数量或含金量评分，证书越权威 / 数量越多得分越高。</div>
                         <input type="number" id="qualityCertification" min="0" max="5">
                     </div>
                     <div class="input-group">
                         <label>国家相关行业许可证（0-5分）:</label>
+                    <div class="explain1">依据是否持有国家或行业强制要求的特许经营许可（如医药生产许可、危化品经营许可等）评分，涉及高门槛资质得高分，无关键许可证低分。</div>
                         <input type="number" id="industryLicense" min="0" max="5">
                     </div>
                     <div class="input-group">
                         <label>专利数量（0-5分）:</label>
+                    <div class="explain1">按企业拥有的有效专利（发明 / 实用新型 / 外观设计）数量评分，每项专利对应一定分值，数量越多得分越高。</div>
                         <input type="number" id="patents" min="0" max="5">
                     </div>
                     <div class="input-group">
                         <label>软件著作权数量（0-5分）:</label>
+                    <div class="explain1">根据企业登记的软件著作权数量评分，每项著作权对应一定分值，数量越多得分越高。</div>
                         <input type="number" id="softwareCopyrights" min="0" max="5">
                     </div>
             
                     <!-- 行业价值 -->
                     <div class="input-group">
-                        <label>行业前景：是否符合国家产业政策调整方向（例如，是否属于新兴领域、数字赋能等高质量发展产业）（0-2分）:</label>
+                        <label>行业前景：是否符合国家产业政策调整方向（0-2分）</label>
+                    <div class="explain1">例如，是否属于新兴领域、数字赋能等高质量发展产业。</div>
                         <input type="number" id="industryProspects" min="0" max="2">
                     </div>
                     <div class="input-group">
-                        <label>数字化转型程度（是否应用物联网、AI技术）（0-1分）:</label>
+                        <label>数字化转型程度（0-1分）</label>
+                    <div class="explain1">是否应用物联网、AI技术。</div>
                         <input type="number" id="digitalTransformation" min="0" max="1">
                     </div>
                     <div class="input-group">
@@ -149,7 +154,6 @@
                         <input type="number" id="industryStatus" min="0" max="2">
                     </div>
             
-                    <div class="explain1">社会价值 </dev>
                     <div class="input-group">
                         <label>为您的企业存续的社会价值打分（如员工稳定性，核心员工留存率等）（0-3分）:</label>
                         <input type="number" id="socialValue" min="0" max="3">
@@ -161,10 +165,12 @@
                     <legend>重整可行性（20%）</legend>
                     <div class="input-group">
                         <label>地方政府支持力度（是否有税收优惠、政策补贴）（0-5分）:</label>
+                    <div class="explain1">根据政府提供的实质性支持（如税收优惠金额、政策补贴力度、是否纳入重点扶持名单）评分，税收减免 / 补贴金额高或被政府重点支持得高分，无实质支持低分。</div>
                         <input type="number" id="govSupport" min="0" max="5">
                     </div>
                     <div class="input-group">
                         <label>潜在投资人意向（是否有投资意向书或协议）（0-5分）:</label>
+                    <div class="explain1">已签署投资意向书，5分；有 3 家以上潜在投资人接触记，3分； 无明确意向，0 分。</div>
                         <input type="number" id="investorInterest" min="0" max="5">
                     </div>
                     <div class="input-group">
@@ -173,6 +179,7 @@
                     </div>
                     <div class="input-group">
                         <label>管理层稳定性（核心团队是否留存）（0-5分）:</label>
+                    <div class="explain1">核心管理层（董事、高管、关键部门负责人）的留存比例及履职状态评分，核心团队 100% 留存且正常参与经营得高分，核心成员流失或履职中断低分。</div>
                         <input type="number" id="managementStability" min="0" max="5">
                     </div>
                 </fieldset>

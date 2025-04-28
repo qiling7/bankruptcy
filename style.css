@@ -22,10 +22,12 @@ body {
 
 .explain1 {
     margin-bottom: 15px;
+    font-weight: normal;
 }
 
 .input-group {
     margin: 15px 0;
+    font-weight: bold; /* 最常用的加粗方式 */
 }
 
 input[type="number"] {
